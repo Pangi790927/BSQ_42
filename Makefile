@@ -1,6 +1,6 @@
 NAME = bsq
 
-SRC = bsq.c solver.c
+SRC = bsq.c solver.c ft_list.c ft_lib_0.c
 CFLAGS = -Wall -Wextra -Werror -O3
 
 all: ${NAME}
