@@ -15,10 +15,10 @@ void	ft_putstr(char *str)
 	printf("%s", str);
 }
 
-int ft_min(int a, int b)
-{
-	return (a < b ? a : b);
-}
+// int ft_min(int a, int b)
+// {
+// 	return (a < b ? a : b);
+// }
 
 void	ft_zeromem(void *mem, int size)
 {

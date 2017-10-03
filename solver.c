@@ -154,8 +154,8 @@ int solver_dynamic_rule(char *line, int *results, int col, t_map *map)
 
 	if (line[col] == map->empty)
 	{
-		result = 1 + ft_min(results[map->line_lenght],
-				ft_min(results[col], results[col - 1]));
+		result = 1 + MIN(results[map->line_lenght],
+				MIN(results[col], results[col - 1]));
 		results[map->line_lenght] = results[col];
 	}
 
