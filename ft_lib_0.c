@@ -12,7 +12,7 @@ int		ft_atoi(char *str)
 /// needs implementation
 void	ft_putstr(char *str)
 {
-	printf("%s\n", str);
+	printf("%s", str);
 }
 
 int ft_min(int a, int b)

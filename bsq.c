@@ -1,3 +1,4 @@
+#include <stdlib.h>
 #include <unistd.h>
 #include <fcntl.h>
 
@@ -22,7 +23,16 @@ void	solve(char *str, int is_stdin)
 	chars[0] = map.empty;
 	chars[1] = map.full;
 	chars[2] = map.fill;
-	print_solution(map.line_lenght, &(map.container), &(map.square), chars);
+	
+	if (!solver_map_error(&map))
+		print_solution(map.line_lenght, &(map.container), &(map.square), chars);
+	
+	/// free the memory even if memory occured
+	if (map.line_buffer)
+		free(map.line_buffer);
+	
+	if (map.result_buffer)
+		free(map.result_buffer);
 	
 	container_free_mem(&(map.container));
 

@@ -44,6 +44,9 @@ void	sovler_map_init(t_map *map)
 	map->line_count = 0;
 	map->line_lenght = 0;
 
+	map->line_buffer = 0;
+	map->result_buffer = 0;
+
 	solver_square_init(&(map->square));
 	container_init(&(map->container));
 }
@@ -116,7 +119,10 @@ int solver_read_line(char *line, int fd, t_map *map)
 		return (solver_set_error(map));
 		
 	/// we read the \n character and we expect that the character is there
-	return (read(fd, &c, 1));
+	if (!read(fd, &c, 1))
+		return (solver_set_error(map));
+
+	return (1);
 }
 
 void	solver_set_square(int x, int y, int size, t_square *square)
@@ -130,7 +136,7 @@ int solver_dynamic_rule(char *line, int *results, int col, t_map *map)
 {
 	int result;
 
-	// printf("%c", line[col]);
+	// printf("%d ", line[col]);
 	container_add(&(map->container), line[col] == map->full);
 
 	result = 0;
@@ -164,8 +170,10 @@ t_map	*solver_dynamic(int fd, t_map *map)
 	int col_index;
 
 	line = solver_get_first_line(fd, map);
-
 	result_vec = (int*)malloc((map->line_lenght + 1)* sizeof(int));
+
+	map->line_buffer = line;
+	map->result_buffer = result_vec; 
 
 	/// we zero the memory so we can use it on the first line
 	ft_zeromem((void *)result_vec, (map->line_lenght + 1)* sizeof(int));
@@ -196,13 +204,12 @@ t_map	*solver_dynamic(int fd, t_map *map)
 		// printf("\n");
 		line_index++;
 	}
-	free(line);
-	free(result_vec);
 	return map;
 }
 
 t_map	*solver_solve(int fd, t_map *map)
 {
+	// char useless;
 	/// init the values of the map
 	sovler_map_init(map);	
 
@@ -219,6 +226,11 @@ t_map	*solver_solve(int fd, t_map *map)
 	/// check if map is still ok
 	if (solver_map_error(map))
 		return map;
+
+	/// comment bellow is not used because it breaks the input
+	/// from standard in
+	// if (read(fd, &useless, 1) != 0)
+	// 	solver_set_error(map);
 
 	return map;
 	/// printing will be managed from the outside
