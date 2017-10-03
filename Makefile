@@ -1,7 +1,7 @@
 NAME = bsq
 
 SRC = bsq.c solver.c ft_list.c ft_lib_0.c container.c
-CFLAGS = -Wall -Wextra -Werror -O3
+CFLAGS = -Wall -Wextra -Werror -O3 -g -pg
 
 all: ${NAME}
 
