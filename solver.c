@@ -97,7 +97,7 @@ char	*solver_get_first_line(int fd, t_map *map)
 	}
 	map->line_lenght = elem_count;
 
-	first_line = (char*)malloc(sizeof(char) * elem_count);
+	first_line = (char*)malloc(sizeof(char) * (elem_count + 1));
 	
 	if (!first_line || elem_count == 0)
 		return (char *)(0) + (solver_set_error(map));
@@ -114,12 +114,11 @@ char	*solver_get_first_line(int fd, t_map *map)
 int solver_read_line(char *line, int fd, t_map *map)
 {
 	/// we also need to memoryze the line after reading it 
-	char c;
-	if (read(fd, line, map->line_lenght) != map->line_lenght)
+	if (read(fd, line, map->line_lenght + 1) != map->line_lenght + 1)
 		return (solver_set_error(map));
 		
 	/// we read the \n character and we expect that the character is there
-	if (!read(fd, &c, 1))
+	if (line[map->line_lenght] != '\n')
 		return (solver_set_error(map));
 
 	return (1);
