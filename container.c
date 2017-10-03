@@ -151,8 +151,8 @@ void	container_free_mem(t_container *container)
 	while (current_node)
 	{
 		to_delete = current_node;
+		current_node = current_node->next;
 		free(to_delete->data);
 		free(to_delete);
-		current_node = current_node->next;
 	}
 }
