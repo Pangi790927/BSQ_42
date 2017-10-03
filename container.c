@@ -112,8 +112,7 @@ void	print_solution(int line_len, t_container *container, t_square *sol, char *s
 	currentNode = container->start;
 	while (i < container->size && currentNode)
 	{
-
-		if (((i + 1) % (ARRAY_LEN * sizeof(unsigned int) * BITS_IN_BYTE) == 0))
+		if (((i) % (ARRAY_LEN * sizeof(unsigned int) * BITS_IN_BYTE) == 0) && i != 0)
 			currentNode = currentNode->next;	
 
 		bit_pos = (i) % (ARRAY_LEN * sizeof(unsigned int) * BITS_IN_BYTE);

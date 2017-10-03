@@ -3,7 +3,7 @@
 #ifndef CONTAINER_H
 # define CONTAINER_H
 
-# define ARRAY_LEN 100
+# define ARRAY_LEN 1000
 # define BITS_IN_BYTE 8
 
 #include "square.h"
