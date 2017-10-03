@@ -104,7 +104,7 @@ void	print_solution(int line_len, t_container *container, t_square *sol, char *s
 	int col;
 	char *array;
 
-	array = (char *)malloc(sizeof(char) * line_len);
+	array = (char *)malloc(sizeof(char) * (line_len + 1));
 
 	t_list_arrays *currentNode;
 
@@ -134,8 +134,8 @@ void	print_solution(int line_len, t_container *container, t_square *sol, char *s
 
 		if (((i + 1) % line_len == 0))
 		{
-			col = write(1, array, line_len);
-			ft_putchar('\n');
+			array[line_len] = '\n';
+			col = write(1, array, line_len + 1);
 		}
 		i++;
 	}
