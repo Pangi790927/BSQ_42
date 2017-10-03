@@ -1,7 +1,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 
-#ifndef FT_CONTAINER_H
-# define FT_CONTAINER_H
+#ifndef CONTAINER_H
+# define CONTAINER_H
 
 # define ARRAY_LEN 8
 

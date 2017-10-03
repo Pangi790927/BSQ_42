@@ -6,22 +6,43 @@
 // to be removed
 #include <stdio.h>
 
-int main(int argc, char const *argv[])
+void	solve(char *str, int is_stdin)
 {
-	int i = 0;
-	while (i < argc)
-		printf("%s\n", argv[i++]);
-
 	int fd;
 	t_map map;
 
-	fd = open("example.ex", O_RDONLY);
+	if (is_stdin)
+		fd = 0;
+	else
+		fd = open(str, O_RDONLY);
+	
 	solver_solve(fd, &map);
 
-	printf("Map: line: %d, col: %d d\n", map.line_count, map.line_lenght);
-	printf("empty: %c, full %c, fill, %c\n", map.empty, map.full, map.fill);
-	printf("Solution: x: %d, y: %d, size: %d\n", map.square.x, map.square.y, map.square.size);
-	close(fd);
+	char chars[3];
+	chars[0] = map.empty;
+	chars[1] = map.full;
+	chars[2] = map.fill;
+	print_solution(map.line_lenght, &(map.container), &(map.square), chars);
 	
+	container_free_mem(&(map.container));
+
+	close(fd);
+}
+
+int main(int argc, char **argv)
+{
+	int i = 0;
+
+	if (argc <= 1)
+	{
+		solve("", 1);
+		return (0);
+	}
+	i = 1;
+	while (i < argc)
+	{
+		solve(argv[i], 0);
+		i++;
+	}
 	return 0;
 }

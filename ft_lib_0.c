@@ -27,7 +27,7 @@ void	ft_zeromem(void *mem, int size)
 		((char*)mem)[i++] = 0;
 }
 
-void	ft_putchar(char c)
+int	ft_putchar(char c)
 {
-	write(1, &c, 1);
+	return (write(1, &c, 1));
 }

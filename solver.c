@@ -45,6 +45,7 @@ void	sovler_map_init(t_map *map)
 	map->line_lenght = 0;
 
 	solver_square_init(&(map->square));
+	container_init(&(map->container));
 }
 
 void	solver_parse_legend(int fd, t_map *map)
@@ -100,7 +101,7 @@ char	*solver_get_first_line(int fd, t_map *map)
 
 	while (list)
 	{
-		first_line[elem_count - 1] = list->data;
+		first_line[--elem_count] = list->data;
 		list = list_remove(list);
 	}
 
@@ -129,7 +130,7 @@ int solver_dynamic_rule(char *line, int *results, int col, t_map *map)
 {
 	int result;
 
-	printf("%c", line[col]);
+	// printf("%c", line[col]);
 	container_add(&(map->container), line[col] == map->full);
 
 	result = 0;
@@ -168,17 +169,19 @@ t_map	*solver_dynamic(int fd, t_map *map)
 
 	/// we zero the memory so we can use it on the first line
 	ft_zeromem((void *)result_vec, (map->line_lenght + 1)* sizeof(int));
+	// line[map->line_lenght - 1] = 0;
 
 	line_index = 0;
-	while (line_index < map->line_count - 1)
+	while (line_index < map->line_count)
 	{
 		col_index = 0;
-		if (!solver_read_line(line, fd, map))
+		if ((line_index != 0) && (!solver_read_line(line, fd, map)))
 			return map;
 	
 		while (col_index < map->line_lenght)
 		{
 			/// if we encountered an error we return
+			// printf(" - %s\n", line);
 			if ((result_vec[col_index] =
 					solver_dynamic_rule(line, result_vec, col_index, map)) == -1)
 				return map;
@@ -190,9 +193,11 @@ t_map	*solver_dynamic(int fd, t_map *map)
 			
 			col_index++;
 		}
-		printf("\n");
+		// printf("\n");
 		line_index++;
 	}
+	free(line);
+	free(result_vec);
 	return map;
 }
 

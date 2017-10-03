@@ -2,6 +2,7 @@
 # define SOLVER_H
 
 #include "square.h"
+#include "container.h"
 
 enum {NO_ERROR, ERROR};
 
