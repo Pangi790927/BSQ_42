@@ -99,7 +99,7 @@ char	*solver_get_first_line(int fd, t_map *map)
 
 	first_line = (char*)malloc(sizeof(char) * (elem_count + 1));
 	
-	if (!first_line || elem_count == 0)
+	if (!first_line || elem_count == 0 || elem != '\n')
 		return (char *)(0) + (solver_set_error(map));
 
 	while (list)
@@ -107,6 +107,9 @@ char	*solver_get_first_line(int fd, t_map *map)
 		first_line[--elem_count] = list->data;
 		list = list_remove(list);
 	}
+
+	if (elem != '\n')
+		return (char *)(0) + (solver_set_error(map));
 
 	return first_line;
 }
@@ -173,6 +176,9 @@ t_map	*solver_dynamic(int fd, t_map *map)
 
 	map->line_buffer = line;
 	map->result_buffer = result_vec; 
+
+	if(solver_map_error(map))
+		return map;
 
 	/// we zero the memory so we can use it on the first line
 	ft_zeromem((void *)result_vec, (map->line_lenght + 1)* sizeof(int));
