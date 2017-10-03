@@ -1,6 +1,7 @@
 #include "container.h"
 
 #include <stdlib.h>
+#include <unistd.h>
 #include "ft_lib.h"
 
 #include <stdio.h>
@@ -101,6 +102,9 @@ void	print_solution(int line_len, t_container *container, t_square *sol, char *s
 	int arr_bit_pos;	// bit pos in int
 	int line;
 	int col;
+	char *array;
+
+	array = (char *)malloc(sizeof(char) * line_len);
 
 	t_list_arrays *currentNode;
 
@@ -122,17 +126,21 @@ void	print_solution(int line_len, t_container *container, t_square *sol, char *s
 		col = i % line_len;
 
 		if (is_in_squre(sol, line, col))
-			ft_putchar(str[2]);
+			array[col] = str[2];
 		else 
 		if (val)
-			ft_putchar(str[1]);
+			array[col] = str[1];
 		else
-			ft_putchar(str[0]);
+			array[col] = str[0];
 
 		if (((i + 1) % line_len == 0))
+		{
+			col = write(1, array, line_len);
 			ft_putchar('\n');
+		}
 		i++;
 	}
+	free(array);
 }
 
 void	container_free_mem(t_container *container)
