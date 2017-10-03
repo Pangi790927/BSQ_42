@@ -18,9 +18,12 @@ int		solver_map_error(t_map *map)
 
 int		solver_set_error(t_map *map)
 {
+	size_t ret_val;
 	if (map->error == NO_ERROR)
 	{
-		ft_putstr("map error\n");
+		ret_val = write(2, "map_error\n", 10);
+		ret_val = ret_val * 2;
+		// ft_putstr("map error\n");
 		map->error = ERROR;
 	}
 	return 0;
