@@ -93,7 +93,7 @@ int		is_in_squre(t_square *square, int line, int col)
 
 void	print_solution(int line_len, t_container *container, t_square *sol, char *str)
 {
-	print_bit_array(container);
+	// print_bit_array(container);
 
 	int i;
 	int bit_pos;		// bit pos in array
