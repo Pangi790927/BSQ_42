@@ -217,7 +217,7 @@ t_map	*solver_dynamic(int fd, t_map *map)
 
 t_map	*solver_solve(int fd, t_map *map)
 {
-	// char useless;
+	char useless;
 	/// init the values of the map
 	sovler_map_init(map);	
 
@@ -237,8 +237,8 @@ t_map	*solver_solve(int fd, t_map *map)
 
 	/// comment bellow is not used because it breaks the input
 	/// from standard in
-	// if (read(fd, &useless, 1) != 0)
-	// 	solver_set_error(map);
+	if (read(fd, &useless, 1) != 0)
+		solver_set_error(map);
 
 	return map;
 	/// printing will be managed from the outside
