@@ -9,12 +9,6 @@ int		ft_atoi(char *str)
 	return atoi(str);
 }
 
-/// needs implementation
-void	ft_putstr(char *str)
-{
-	printf("%s", str);
-}
-
 // int ft_min(int a, int b)
 // {
 // 	return (a < b ? a : b);

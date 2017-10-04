@@ -167,50 +167,45 @@ int solver_dynamic_rule(char *line, int *results, int col, t_map *map)
 	return result;
 }
 
+void	solver_dynamic_init_line_and_alloc(t_map *map, int fd)
+{
+	map->line_buffer = solver_get_first_line(fd, map);
+	map->result_buffer = (int*)malloc((map->line_lenght + 1)* sizeof(int)); 
+	ft_zeromem((void *)(map->result_buffer), (map->line_lenght + 1)
+		* sizeof(int));
+}
+
+void	solver_dynamic_update_solution(t_map *map, int line, int col)
+{
+	if (map->square.size < map->result_buffer[col])
+		solver_set_square(col, line,
+				map->result_buffer[col], &(map->square));
+}
+
 t_map	*solver_dynamic(int fd, t_map *map)
 {
-	char *line;
-	int *result_vec;
-	int line_index;
-	int col_index;
+	int line_it;
+	int col_it;
 
-	line = solver_get_first_line(fd, map);
-	result_vec = (int*)malloc((map->line_lenght + 1)* sizeof(int));
-
-	map->line_buffer = line;
-	map->result_buffer = result_vec; 
-
+	solver_dynamic_init_line_and_alloc(map, fd);
 	if(solver_map_error(map))
 		return map;
-
-	/// we zero the memory so we can use it on the first line
-	ft_zeromem((void *)result_vec, (map->line_lenght + 1)* sizeof(int));
-	// line[map->line_lenght - 1] = 0;
-
-	line_index = 0;
-	while (line_index < map->line_count)
+	line_it = 0;
+	while (line_it < map->line_count)
 	{
-		col_index = 0;
-		if ((line_index != 0) && (!solver_read_line(line, fd, map)))
+		col_it = 0;
+		if ((line_it != 0) && (!solver_read_line(map->line_buffer, fd, map)))
 			return map;
-	
-		while (col_index < map->line_lenght)
+		while (col_it < map->line_lenght)
 		{
-			/// if we encountered an error we return
-			// printf(" - %s\n", line);
-			if ((result_vec[col_index] =
-					solver_dynamic_rule(line, result_vec, col_index, map)) == -1)
+			if ((map->result_buffer[col_it] =
+					solver_dynamic_rule(map->line_buffer, map->result_buffer,
+					col_it, map)) == -1)
 				return map;
-
-			/// if we found a bigger square set it
-			if (map->square.size < result_vec[col_index])
-				solver_set_square(col_index, line_index,
-						result_vec[col_index], &(map->square));
-			
-			col_index++;
+			solver_dynamic_update_solution(map, line_it, col_it);
+			col_it++;
 		}
-		// printf("\n");
-		line_index++;
+		line_it++;
 	}
 	return map;
 }

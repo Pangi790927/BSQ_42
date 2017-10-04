@@ -92,45 +92,51 @@ int		is_in_squre(t_square *square, int line, int col)
 	return 0;
 }
 
-void	print_solution(int line_len, t_container *container, t_square *sol, char *str)
+int		container_get_val(t_list_arrays *node, int i)
 {
-	// print_bit_array(container);
-
-	int i;
 	int bit_pos;		// bit pos in array
 	int pos;			// pos in array
 	int arr_bit_pos;	// bit pos in int
+
+	bit_pos = (i) % (ARRAY_LEN * sizeof(unsigned int) * BITS_IN_BYTE);
+	pos = bit_pos / (sizeof(unsigned int) * BITS_IN_BYTE);
+	arr_bit_pos = bit_pos % (sizeof(unsigned int) * BITS_IN_BYTE);
+
+	return ((node->data[pos] & (1 << arr_bit_pos)) && 1); 
+}
+
+int		print_solution_char(int val, int line, int col, t_square *sol)
+{
+	if (is_in_squre(sol, line, col))
+		return 2;
+	else if (val)
+		return 1;
+	else
+		return 0;
+}
+
+void	print_solution(int line_len, t_container *container, t_square *sol, char *str)
+{
+	int i;
 	int line;
 	int col;
 	char *array;
+	t_list_arrays *current_node;
 
 	array = (char *)malloc(sizeof(char) * (line_len + 1));
 
-	t_list_arrays *currentNode;
-
 	i = 0;
-	currentNode = container->start;
-	while (i < container->size && currentNode)
+	current_node = container->start;
+	while (i < container->size && current_node)
 	{
 		if (((i) % (ARRAY_LEN * sizeof(unsigned int) * BITS_IN_BYTE) == 0) && i != 0)
-			currentNode = currentNode->next;	
+			current_node = current_node->next;	
 
-		bit_pos = (i) % (ARRAY_LEN * sizeof(unsigned int) * BITS_IN_BYTE);
-		pos = bit_pos / (sizeof(unsigned int) * BITS_IN_BYTE);
-		arr_bit_pos = bit_pos % (sizeof(unsigned int) * BITS_IN_BYTE);
-
-		int val = (currentNode->data[pos] & (1 << arr_bit_pos)) && 1; 
-		
 		line = i / line_len;
 		col = i % line_len;
 
-		if (is_in_squre(sol, line, col))
-			array[col] = str[2];
-		else 
-		if (val)
-			array[col] = str[1];
-		else
-			array[col] = str[0];
+		array[col] = str[print_solution_char(container_get_val(current_node, i)
+			, line, col, sol)];
 
 		if (((i + 1) % line_len == 0))
 		{
